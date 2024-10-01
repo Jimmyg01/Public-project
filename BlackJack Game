@@ -1,0 +1,94 @@
+import random
+import time
+
+cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+
+game = input("Would you like to play BlackJack? y or n \n")
+
+def blackjack_game():
+    #Deal computer a set of two random cards from the deck
+    computer_card_1 = random.choice(cards)
+    computer_card_2 = random.choice(cards)
+    computer_deck = [computer_card_1,computer_card_2]
+    computer_score = computer_card_1 + computer_card_2
+
+    #Deal user a set of two random cards from the deck
+    user_card_1 = random.choice(cards)
+    user_card_2 = random.choice(cards)
+    user_deck = [user_card_1,user_card_2]
+    user_score = user_card_1 + user_card_2
+    print(f"Your cards are {user_deck} giving a score of {user_score}")
+
+    #Terminate game if computer draws a blackjack
+    if computer_card_1 + computer_card_2 == 21:
+        print (".. But the computer has a BlackJack so you lose")
+        game = "n"
+
+    #Terminate game if User draws a blackjack
+    if user_card_1 + user_card_2 == 21:
+        print(f"The computers first card is [{computer_card_1}]\n ")
+        print("You got BlackJack Congratulations win!")
+        game = "n"
+
+    # If niether player has a blackjack tells the user the computers first card
+    print(f"The computers first card is [{computer_card_1}]\n")
+    # time.sleep(2)
+
+    # Users first go
+    continue_drawing = True
+    while continue_drawing == True :
+        user_draw = input ("Would you like to draw another card 'y' for another card, 'n' to stick\n")
+
+        # User takes another card and it's added to their deck and score
+        if user_draw == "y":
+             user_deck.append(random.choice(cards))
+             user_score = sum(user_deck)
+             print("\n")
+             print(f"Your cards are {user_deck} giving a total of {user_score}")
+             #Check for five card trick
+             num_cards = len(user_deck)
+             if num_cards >= 5:
+                 print("Congratulations you reached a 5 card trick, so YOU WIN")
+
+        #User declines the opportunity to take another card and ends their go
+        elif user_draw == "n":
+             continue_drawing = False
+
+        # User's score exceeds 21 and they bust losing the game.
+        if user_score > 21:
+            print("You bust, you Lose")
+            user_score = 0
+            continue_drawing = False
+
+
+    # If the user has not bust then it's the computers turn to stick or twist.
+    while computer_score <16 and user_score > 0:
+        computer_deck.append(random.choice(cards))
+        computer_score = sum(computer_deck)
+        print("\nAs the computer has a score of less than 15 they are going to draw again:")
+        print(f"The computer has drawn: {computer_deck} giving a score of {computer_score}")
+        time.sleep(1)
+        if computer_score > 21:
+            print("The computer has bust YOU WIN")
+            game = "n"
+
+
+
+
+    # Determine the outcome of the game based on the scores of the user and computer.
+    if user_score >0:
+        # # Computers first go
+        print (f"\nYou have {user_score} and the computer has {computer_score} so ...")
+
+        if user_score > computer_score:
+            print("Congratulations you win")
+        elif user_score == computer_score:
+            print("It's a draw!")
+        else:
+            print("Sorry you lose")
+
+while game == "y":
+    print("\n " * 20 )
+    blackjack_game()
+    game = input("Would you like to play again? y or no \n")
+
